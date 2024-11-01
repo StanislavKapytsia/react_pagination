@@ -2,50 +2,50 @@ import { getNumbers } from '../../utils';
 
 interface Props {
   items: string[];
-  ItemsPerPage: number;
+  itemsPerPage: number;
   currentPage: number;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  onPageChange: (value: number) => void;
 }
 
 export const Pagination: React.FC<Props> = ({
   items,
-  ItemsPerPage,
+  itemsPerPage: ItemsPerPage,
   currentPage,
-  setCurrentPage,
+  onPageChange,
 }) => {
   function creativePageContent(
     data: string[],
-    listLegth: number,
+    listLength: number,
     selectPage: number = 1,
   ) {
     const arrayOfSliceData = [];
     const index = selectPage - 1;
 
-    for (let i = 0; i < data.length; i += listLegth) {
-      arrayOfSliceData.push(data.slice(i, i + listLegth));
+    for (let i = 0; i < data.length; i += listLength) {
+      arrayOfSliceData.push(data.slice(i, i + listLength));
     }
 
-    const pageContent = arrayOfSliceData[index];
+    if (arrayOfSliceData[index]) {
+      const pageContent = arrayOfSliceData[index];
 
-    return pageContent;
+      return pageContent;
+    }
+
+    return 0;
   }
 
   const content = creativePageContent(items, ItemsPerPage, currentPage);
-
-  function handlePageChange(number: number) {
-    setCurrentPage(number);
-  }
 
   const totalPages = Math.ceil(items.length / ItemsPerPage);
   const pages: number[] = getNumbers(1, totalPages);
 
   function movePage(page: number, direction: string) {
     if (direction === 'back' && page !== 1) {
-      setCurrentPage(page - 1);
+      onPageChange(page - 1);
     }
 
     if (direction === 'next' && page !== totalPages) {
-      setCurrentPage(page + 1);
+      onPageChange(page + 1);
     }
   }
 
@@ -73,7 +73,7 @@ export const Pagination: React.FC<Props> = ({
               data-cy="pageLink"
               className="page-link"
               href={`#${page}`}
-              onClick={() => handlePageChange(page)}
+              onClick={() => onPageChange(page)}
             >
               {page}
             </a>

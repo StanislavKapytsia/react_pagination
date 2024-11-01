@@ -18,6 +18,10 @@ export const App: React.FC = () => {
     setCurrentPage(1);
   }
 
+  function onPageChange(data: number) {
+    setCurrentPage(data);
+  }
+
   return (
     <div className="container">
       <h1>Items with Pagination</h1>
@@ -48,9 +52,9 @@ export const App: React.FC = () => {
       </div>
       <Pagination
         items={items}
-        ItemsPerPage={itemsPerPage}
+        itemsPerPage={itemsPerPage}
         currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
+        onPageChange={onPageChange}
       />
     </div>
   );
